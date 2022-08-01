@@ -151,13 +151,19 @@ func (cc *CosmosProvider) AddKey(name string, coinType uint32) (*provider.KeyOut
 func (cc *CosmosProvider) Address() (string, error) {
 	var (
 		err  error
-		info keyring.Info
+		info *keyring.Record
 	)
 	info, err = cc.Keybase.Key(cc.PCfg.Key)
 	if err != nil {
 		return "", err
 	}
-	out, err := cc.EncodeBech32AccAddr(info.GetAddress())
+
+	addr, err := info.GetAddress()
+	if err != nil {
+		return "", err
+	}
+
+	out, err := cc.EncodeBech32AccAddr(addr.Bytes())
 	if err != nil {
 		return "", err
 	}

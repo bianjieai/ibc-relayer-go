@@ -235,7 +235,7 @@ func (cc *CosmosProvider) buildMessages(ctx context.Context, msgs []provider.Rel
 	var txb client.TxBuilder
 	// Build the transaction builder & retry on failures
 	if err := retry.Do(func() error {
-		txb, err = tx.BuildUnsignedTx(txf, CosmosMsgs(msgs...)...)
+		txb, err = txf.BuildUnsignedTx(CosmosMsgs(msgs...)...)
 		if err != nil {
 			return err
 		}
